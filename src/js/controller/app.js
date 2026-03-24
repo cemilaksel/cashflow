@@ -5,6 +5,8 @@ import { renderTable } from '../view/tablo.js';
 import { renderChart } from '../view/grafik.js';
 import { renderCards } from '../view/kartlar.js';
 import { renderForm } from '../view/form.js';
+import { renderHelp } from '../view/help.js';
+import { getHelpContent } from '../model/help.js';
 import { exportToCSV, exportToJSON } from '../utils/export.js';
 
 let currentConfig = getDemoConfig();
@@ -31,6 +33,7 @@ const elements = {
   btnToResults: document.getElementById('btn-to-results'),
   btnToData: document.getElementById('btn-to-data'),
   btnExportExcel: document.getElementById('btn-export-excel'),
+  btnHelp: document.getElementById('btn-help'),
   modalOverlay: document.getElementById('modal-overlay'),
   modalTitle: document.getElementById('modal-title'),
   modalBody: document.getElementById('modal-body'),
@@ -53,23 +56,25 @@ const showModal = (title, bodyHtml, onConfirm) => {
   elements.modalOverlay.classList.add('show');
   
   const confirmHandler = () => {
-    onConfirm();
+    if (onConfirm) onConfirm();
     closeModal();
-    elements.modalConfirm.removeEventListener('click', confirmHandler);
   };
-  
-  elements.modalConfirm.addEventListener('click', confirmHandler);
   
   const cancelHandler = () => {
     closeModal();
-    elements.modalConfirm.removeEventListener('click', confirmHandler);
-    elements.modalCancel.removeEventListener('click', cancelHandler);
   };
-  elements.modalCancel.addEventListener('click', cancelHandler);
+  
+  elements.modalConfirm.addEventListener('click', confirmHandler, { once: true });
+  elements.modalCancel.addEventListener('click', cancelHandler, { once: true });
 };
 
 const closeModal = () => {
   elements.modalOverlay.classList.remove('show');
+  // Reset modal state
+  const modal = elements.modalOverlay.querySelector('.modal');
+  modal.classList.remove('modal-help');
+  elements.modalConfirm.classList.remove('hidden');
+  elements.modalCancel.textContent = "İptal";
 };
 
 const updateUI = () => {
@@ -215,6 +220,20 @@ elements.btnReset.addEventListener('click', () => {
 elements.btnExportExcel.addEventListener('click', () => {
   const results = calculateProjection(currentConfig);
   exportToCSV(currentConfig, results);
+});
+
+elements.btnHelp.addEventListener('click', () => {
+  const helpData = getHelpContent();
+  const modal = elements.modalOverlay.querySelector('.modal');
+  modal.classList.add('modal-help');
+  
+  showModal(helpData.title, '<div id="help-render-target"></div>', null);
+  
+  // Hide confirm button for help modal as it's just informational
+  elements.modalConfirm.classList.add('hidden');
+  elements.modalCancel.textContent = "Kapat";
+  
+  renderHelp(document.getElementById('help-render-target'), helpData);
 });
 
 elements.modalOverlay.addEventListener('click', (e) => {
