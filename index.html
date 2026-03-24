@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nakit Akışı Projeksiyonu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/css/style.css">
+</head>
+<body>
+  <div id="banner" class="banner"></div>
+
+  <header>
+    <div class="container">
+      <h1>Nakit Akışı Projeksiyonu</h1>
+      <p>Ailenizin finansal geleceğini planlayın ve nakit akışınızı simüle edin.</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="scenario-bar">
+      <select id="scenario-select"></select>
+      <button id="btn-save" class="btn btn-primary">💾 Kaydet</button>
+      <button id="btn-save-as" class="btn btn-outline">📋 Farklı Kaydet</button>
+      <button id="btn-delete" class="btn btn-danger">🗑️ Sil</button>
+      <button id="btn-export" class="btn btn-outline">📤 Dışarıya Aktar</button>
+      <button id="btn-import" class="btn btn-outline">📥 Dışarıdan Al</button>
+      <input type="file" id="import-file" class="hidden" accept=".json">
+    </div>
+
+    <div class="tabs">
+      <div id="tab-data" class="tab active">Veri Girişi</div>
+      <div id="tab-results" class="tab">Sonuçlar</div>
+    </div>
+
+    <div id="content-data">
+      <!-- Form will be rendered here -->
+    </div>
+
+    <div id="content-results" class="hidden">
+      <div id="cards-container"></div>
+      <div id="chart-container"></div>
+      <div id="table-container"></div>
+    </div>
+
+    <div class="bottom-actions">
+      <div id="data-actions" class="flex gap-10">
+        <button id="btn-demo" class="btn btn-outline">📥 Demo Yükle</button>
+        <button id="btn-reset" class="btn btn-danger">🗑️ Tüm Verileri Sil</button>
+        <button id="btn-to-results" class="btn btn-primary">📊 Sonuçlar</button>
+      </div>
+      <div id="results-actions" class="flex gap-10 hidden">
+        <button id="btn-to-data" class="btn btn-outline">⚙️ Verileri Düzenle</button>
+        <button id="btn-export-excel" class="btn btn-primary">📥 Excel'e Aktar</button>
+      </div>
+    </div>
+
+    <div class="external-tools">
+      <a href="https://chatgpt.com/g/g-WqrpxrYm4-budget-analyzer" target="_blank" class="tool-btn">
+        📊 Bütçe Analizi (ChatGPT)
+      </a>
+      <a href="https://chatgpt.com/g/g-68a9f4bcd0dc8191a18d0052788da5e0-bank-interest-bank-charges-cb-24-25" target="_blank" class="tool-btn">
+        🏦 Banka Faiz Oranları
+      </a>
+    </div>
+  </main>
+
+  <!-- Modal Overlay -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal">
+      <h2 id="modal-title">Başlık</h2>
+      <div id="modal-body" class="modal-body"></div>
+      <div class="modal-footer">
+        <button id="modal-cancel" class="btn btn-outline">İptal</button>
+        <button id="modal-confirm" class="btn btn-primary">Onayla</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="src/js/controller/app.js"></script>
+</body>
+</html>
